@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private var inputField: EditText? = null
     private var submitButton: Button? = null
     private var textView: TextView? = null
+    private var dataList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
 
         submitButton?.setOnClickListener {
             textView?.text = inputField?.text.toString()
+            val text = inputField?.text.toString()
+            if (text.isNotEmpty()) {
+                dataList.add(text)
+            }
         }
 
         toolbar?.title = "Shopping Mobile"
