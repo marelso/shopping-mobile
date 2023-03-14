@@ -25,6 +25,11 @@ class MainActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         inputField = findViewById(R.id.inputField)
         submitButton = findViewById(R.id.submitButton)
+        recyclerView = findViewById(R.id.recyclerView)
+
+
+        toolbar?.title = "Shopping Mobile"
+        setSupportActionBar(toolbar)
 
         submitButton?.setOnClickListener {
             val text = inputField?.text.toString()
@@ -35,11 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        recyclerView = findViewById(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = TextAdapter(dataList)
-
-        toolbar?.title = "Shopping Mobile"
-        setSupportActionBar(toolbar)
     }
 }
