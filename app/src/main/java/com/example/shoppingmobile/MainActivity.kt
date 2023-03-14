@@ -6,14 +6,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.shoppingmobile.adapters.TextAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private var toolbar: Toolbar? = null
     private var inputField: EditText? = null
     private var submitButton: Button? = null
-    private var textView: TextView? = null
     private var dataList = mutableListOf<String>()
+    private var recyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,15 +25,19 @@ class MainActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         inputField = findViewById(R.id.inputField)
         submitButton = findViewById(R.id.submitButton)
-        textView = findViewById(R.id.textView)
 
         submitButton?.setOnClickListener {
-            textView?.text = inputField?.text.toString()
             val text = inputField?.text.toString()
             if (text.isNotEmpty()) {
                 dataList.add(text)
+                recyclerView?.adapter?.notifyItemInserted(dataList.size - 1)
+                inputField?.text?.clear()
             }
         }
+
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.adapter = TextAdapter(dataList)
 
         toolbar?.title = "Shopping Mobile"
         setSupportActionBar(toolbar)

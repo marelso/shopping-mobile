@@ -10,6 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
@@ -17,24 +18,28 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:gravity="center">
+
         <EditText
             android:id="@+id/inputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter text here"/>
+
         <View
             android:layout_height="16dp"
             android:layout_width="match_parent" />
+
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:onClick="submit"/>
-        <TextView
-            android:id="@+id/textView"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""/>
+            android:layout_height="match_parent"/>
+
     </LinearLayout>
 </LinearLayout>
