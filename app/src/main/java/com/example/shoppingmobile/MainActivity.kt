@@ -6,10 +6,12 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.adapters.TextAdapter
 import com.example.shoppingmobile.view_model.TextViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,9 +41,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = textAdapter
 
-        viewModel.dataList.observe(this) { data ->
-            textAdapter.setData(data)
+        lifecycleScope.launch {
+            viewModel.dataList.collect { data ->
+                textAdapter.setData(data.toMutableList())
+            }
         }
+
     }
 
     private fun onSubmitClicked() {
