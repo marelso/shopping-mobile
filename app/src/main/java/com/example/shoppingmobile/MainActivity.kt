@@ -35,11 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         submitButton?.setOnClickListener {
             val text = inputField?.text.toString()
-            if (text.isNotEmpty()) {
-                viewModel.dataList.add(text)
-                recyclerView?.adapter?.notifyItemInserted(viewModel.dataList.size - 1)
-                inputField?.text?.clear()
-            }
+            viewModel.addItem(text)
+            recyclerView?.adapter?.notifyItemInserted(viewModel.dataList.size - 1)
+            inputField?.text?.clear()
         }
 
         recyclerView?.layoutManager = LinearLayoutManager(this)
