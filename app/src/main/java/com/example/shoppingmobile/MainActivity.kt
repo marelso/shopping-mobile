@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private var inputField: EditText? = null
     private var submitButton: Button? = null
     private var recyclerView: RecyclerView? = null
+    private var textAdapter: TextAdapter = TextAdapter()
     private lateinit var viewModel: TextViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,11 @@ class MainActivity : AppCompatActivity() {
         submitButton?.setOnClickListener { onSubmitClicked() }
 
         recyclerView?.layoutManager = LinearLayoutManager(this)
-        recyclerView?.adapter = TextAdapter(viewModel.dataList)
+        recyclerView?.adapter = textAdapter
+
+        viewModel.dataList.observe(this) { data ->
+            textAdapter.setData(data)
+        }
     }
 
     private fun onSubmitClicked() {
@@ -44,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.addItem(text)
 
-        recyclerView?.adapter?.notifyItemInserted(viewModel.dataList.size - 1)
         inputField?.text?.clear()
     }
 }
