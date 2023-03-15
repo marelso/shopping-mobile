@@ -33,14 +33,18 @@ class MainActivity : AppCompatActivity() {
         toolbar?.title = "Shopping Mobile"
         setSupportActionBar(toolbar)
 
-        submitButton?.setOnClickListener {
-            val text = inputField?.text.toString()
-            viewModel.addItem(text)
-            recyclerView?.adapter?.notifyItemInserted(viewModel.dataList.size - 1)
-            inputField?.text?.clear()
-        }
+        submitButton?.setOnClickListener { onSubmitClicked() }
 
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = TextAdapter(viewModel.dataList)
+    }
+
+    private fun onSubmitClicked() {
+        val text = inputField?.text.toString()
+
+        viewModel.addItem(text)
+
+        recyclerView?.adapter?.notifyItemInserted(viewModel.dataList.size - 1)
+        inputField?.text?.clear()
     }
 }
