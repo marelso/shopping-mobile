@@ -41,11 +41,11 @@
             android:layout_height="wrap_content"
             android:text="Switch mode"/>
 
-        <fragment
-            android:name="com.example.shoppingmobile.UserFragment"
+        <FrameLayout
+            android:id="@+id/flFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </fragment>
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

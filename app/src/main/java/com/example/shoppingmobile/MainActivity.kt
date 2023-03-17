@@ -18,9 +18,11 @@ class MainActivity : AppCompatActivity() {
     private var toolbar: Toolbar? = null
     private var inputField: EditText? = null
     private var submitButton: Button? = null
+    private var switchButton: Button? = null
     private var recyclerView: RecyclerView? = null
     private var textAdapter: TextAdapter = TextAdapter()
     private lateinit var viewModel: TextViewModel
+    private var isAdmin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         inputField = findViewById(R.id.inputField)
         submitButton = findViewById(R.id.submitButton)
+        switchButton = findViewById(R.id.btnSwitchMode)
         recyclerView = findViewById(R.id.recyclerView)
         viewModel = ViewModelProvider(this).get(TextViewModel::class.java)
 
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         submitButton?.setOnClickListener { onSubmitClicked() }
+
+        switchButton?.setOnClickListener { switchViewMode() }
 
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = textAdapter
@@ -55,5 +60,24 @@ class MainActivity : AppCompatActivity() {
         viewModel.addItem(text)
 
         inputField?.text?.clear()
+    }
+
+    private fun switchViewMode() {
+        val userMode = UserFragment()
+        val adminMode = AdminFragment()
+
+        this.isAdmin = !this.isAdmin
+        supportFragmentManager.beginTransaction().apply {
+            when(isAdmin) {
+                true -> {
+                    replace(R.id.flFragment, adminMode)
+                    commit()
+                }
+                else -> {
+                    replace(R.id.flFragment, userMode)
+                    commit()
+                }
+            }
+        }
     }
 }
