@@ -1,6 +1,5 @@
-package com.example.shoppingmobile.adapters
+package com.example.shoppingmobile.basics
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

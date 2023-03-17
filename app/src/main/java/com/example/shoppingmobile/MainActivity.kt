@@ -3,16 +3,11 @@ package com.example.shoppingmobile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.shoppingmobile.adapters.TextAdapter
-import com.example.shoppingmobile.view_model.TextViewModel
-import kotlinx.coroutines.launch
+import com.example.shoppingmobile.admin.AdminFragment
+import com.example.shoppingmobile.basics.BasicsFragment
+import com.example.shoppingmobile.user.UserFragment
 
 class MainActivity : AppCompatActivity() {
 

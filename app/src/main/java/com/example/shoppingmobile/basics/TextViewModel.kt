@@ -1,4 +1,4 @@
-package com.example.shoppingmobile.view_model
+package com.example.shoppingmobile.basics
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
