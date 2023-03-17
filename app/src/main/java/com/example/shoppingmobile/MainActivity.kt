@@ -2,6 +2,7 @@ package com.example.shoppingmobile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -42,6 +43,13 @@ class MainActivity : AppCompatActivity() {
 
         basicsButton?.setOnClickListener { switchViewMode(basicsMode) }
 
+    }
+
+    @Override
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
     }
 
     private fun switchViewMode(fragment: Fragment) {
