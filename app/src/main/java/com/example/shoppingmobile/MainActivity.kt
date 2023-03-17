@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,68 +17,42 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private var toolbar: Toolbar? = null
-    private var inputField: EditText? = null
-    private var submitButton: Button? = null
     private var switchButton: Button? = null
-    private var recyclerView: RecyclerView? = null
-    private var textAdapter: TextAdapter = TextAdapter()
-    private lateinit var viewModel: TextViewModel
     private var isAdmin: Boolean = false
+    private var basicsButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         toolbar = findViewById(R.id.toolbar)
-        inputField = findViewById(R.id.inputField)
-        submitButton = findViewById(R.id.submitButton)
-        switchButton = findViewById(R.id.btnSwitchMode)
-        recyclerView = findViewById(R.id.recyclerView)
-        viewModel = ViewModelProvider(this).get(TextViewModel::class.java)
-
-
         toolbar?.title = "Shopping Mobile"
         setSupportActionBar(toolbar)
 
-        submitButton?.setOnClickListener { onSubmitClicked() }
+        switchButton = findViewById(R.id.btnSwitchMode)
+        basicsButton = findViewById(R.id.btnBasicsMode)
 
-        switchButton?.setOnClickListener { switchViewMode() }
 
-        recyclerView?.layoutManager = LinearLayoutManager(this)
-        recyclerView?.adapter = textAdapter
 
-        lifecycleScope.launch {
-            viewModel.dataList.collect { data ->
-                textAdapter.setData(data.toMutableList())
-            }
-        }
 
-    }
 
-    private fun onSubmitClicked() {
-        val text = inputField?.text.toString()
-
-        viewModel.addItem(text)
-
-        inputField?.text?.clear()
-    }
-
-    private fun switchViewMode() {
         val userMode = UserFragment()
         val adminMode = AdminFragment()
+        val basicsMode = BasicsFragment()
 
-        this.isAdmin = !this.isAdmin
+        switchButton?.setOnClickListener {
+            this.isAdmin = !this.isAdmin
+            switchViewMode(if(this.isAdmin) adminMode else userMode)
+        }
+
+        basicsButton?.setOnClickListener { switchViewMode(basicsMode) }
+
+    }
+
+    private fun switchViewMode(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
-            when(isAdmin) {
-                true -> {
-                    replace(R.id.flFragment, adminMode)
-                    commit()
-                }
-                else -> {
-                    replace(R.id.flFragment, userMode)
-                    commit()
-                }
-            }
+            replace(R.id.flFragment, fragment)
+            commit()
         }
     }
 }
