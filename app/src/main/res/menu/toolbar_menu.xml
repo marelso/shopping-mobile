@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Catalogs" />
-    <item android:title="Categories" />
-    <item android:title="Offers" />
-    <item android:title="Coupons" />
-    <item android:title="View the basics" />
+
+    <item
+        android:id="@+id/switchMode"
+        android:title="Switch"
+        app:actionLayout="@layout/switch_item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/catalogs"
+        android:title="Catalogs" />
+
+    <item
+        android:id="@+id/categories"
+        android:title="Categories" />
+
+    <item
+        android:id="@+id/offers"
+        android:title="Offers" />
+
+    <item
+        android:id="@+id/coupons"
+        android:title="Coupons" />
+
+    <item
+        android:id="@+id/basics"
+        android:title="View the basics" />
+
 </menu>

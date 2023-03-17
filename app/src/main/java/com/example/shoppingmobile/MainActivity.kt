@@ -3,7 +3,8 @@ package com.example.shoppingmobile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Button
+import android.view.MenuItem
+import android.widget.Switch
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.shoppingmobile.admin.AdminFragment
@@ -13,9 +14,6 @@ import com.example.shoppingmobile.user.UserFragment
 class MainActivity : AppCompatActivity() {
 
     private var toolbar: Toolbar? = null
-    private var switchButton: Button? = null
-    private var isAdmin: Boolean = false
-    private var basicsButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,31 +23,52 @@ class MainActivity : AppCompatActivity() {
         toolbar?.title = "Shopping Mobile"
         setSupportActionBar(toolbar)
 
-        switchButton = findViewById(R.id.btnSwitchMode)
-        basicsButton = findViewById(R.id.btnBasicsMode)
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, UserFragment())
+            commit()
+        }
+    }
 
-
-
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
 
         val userMode = UserFragment()
         val adminMode = AdminFragment()
-        val basicsMode = BasicsFragment()
 
-        switchButton?.setOnClickListener {
-            this.isAdmin = !this.isAdmin
-            switchViewMode(if(this.isAdmin) adminMode else userMode)
+        val switchItem = menu?.findItem(R.id.switchMode)
+        val switch = switchItem?.actionView?.findViewById<Switch>(R.id.isAdmin)
+
+        switch?.setOnCheckedChangeListener { _, isChecked ->
+            switchViewMode(if(isChecked) adminMode else userMode)
         }
 
-        basicsButton?.setOnClickListener { switchViewMode(basicsMode) }
-
+        return true
     }
 
-    @Override
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.catalogs -> {
+                // TODO Handle the "Catalogs" item click
+                true
+            }
+            R.id.categories -> {
+                // TODO Handle the "Categories" item click
+                true
+            }
+            R.id.offers -> {
+                // TODO Handle the "Offers" item click
+                true
+            }
+            R.id.coupons -> {
+                // TODO Handle the "Coupons" item click
+                true
+            }
+            R.id.basics -> {
+                switchViewMode(BasicsFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun switchViewMode(fragment: Fragment) {
