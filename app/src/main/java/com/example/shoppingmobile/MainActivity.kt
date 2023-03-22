@@ -9,8 +9,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.shoppingmobile.admin.AdminFragment
 import com.example.shoppingmobile.basics.BasicsFragment
+import com.example.shoppingmobile.catalog.CatalogFragment
+import com.example.shoppingmobile.category.CategoryFragment
+import com.example.shoppingmobile.coupon.CouponFragment
+import com.example.shoppingmobile.offer.OfferFragment
 import com.example.shoppingmobile.user.UserFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,14 +31,12 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.flFragment, UserFragment())
             commit()
         }
-
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            switchMenuItem(item)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
+
+        menuInflater.inflate(R.menu.bottom_nav_menu, menu)
 
         val userMode = UserFragment()
         val adminMode = AdminFragment()
@@ -66,19 +67,19 @@ class MainActivity : AppCompatActivity() {
     private fun switchMenuItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.catalogs -> {
-                // TODO Handle the "Catalogs" item click
+                switchViewMode(CatalogFragment())
                 return true
             }
             R.id.categories -> {
-                // TODO Handle the "Categories" item click
+                switchViewMode(CategoryFragment())
                 return true
             }
             R.id.offers -> {
-                // TODO Handle the "Offers" item click
+                switchViewMode(OfferFragment())
                 return true
             }
             R.id.coupons -> {
-                // TODO Handle the "Coupons" item click
+                switchViewMode(CouponFragment())
                 return true
             }
             R.id.basics -> {
