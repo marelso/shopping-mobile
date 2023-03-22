@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
 
-        menuInflater.inflate(R.menu.bottom_nav_menu, menu)
-
         val userMode = UserFragment()
         val adminMode = AdminFragment()
 
