@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.shoppingmobile.admin.AdminFragment
 import com.example.shoppingmobile.basics.BasicsFragment
 import com.example.shoppingmobile.user.UserFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +27,10 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, UserFragment())
             commit()
+        }
+
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            switchMenuItem(item)
         }
     }
 
@@ -46,35 +51,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.catalogs -> {
-                // TODO Handle the "Catalogs" item click
-                true
-            }
-            R.id.categories -> {
-                // TODO Handle the "Categories" item click
-                true
-            }
-            R.id.offers -> {
-                // TODO Handle the "Offers" item click
-                true
-            }
-            R.id.coupons -> {
-                // TODO Handle the "Coupons" item click
-                true
-            }
-            R.id.basics -> {
-                switchViewMode(BasicsFragment())
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        if(!switchMenuItem(item)) super.onOptionsItemSelected(item)
+
+        return true
     }
 
     private fun switchViewMode(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
             commit()
+        }
+    }
+
+    private fun switchMenuItem(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.catalogs -> {
+                // TODO Handle the "Catalogs" item click
+                return true
+            }
+            R.id.categories -> {
+                // TODO Handle the "Categories" item click
+                return true
+            }
+            R.id.offers -> {
+                // TODO Handle the "Offers" item click
+                return true
+            }
+            R.id.coupons -> {
+                // TODO Handle the "Coupons" item click
+                return true
+            }
+            R.id.basics -> {
+                switchViewMode(BasicsFragment())
+                return true
+            }
+            else -> return false
         }
     }
 }
