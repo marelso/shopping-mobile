@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "http://localhost:8080/catalogs"
+    private const val BASE_URL = "http://localhost:8080/"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
