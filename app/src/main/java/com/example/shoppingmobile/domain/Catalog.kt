@@ -1,3 +1,10 @@
 package com.example.shoppingmobile.domain
 
-data class Catalog()
+import com.google.gson.annotations.SerializedName
+
+data class Catalog(
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("description") val description: String
+)
+
