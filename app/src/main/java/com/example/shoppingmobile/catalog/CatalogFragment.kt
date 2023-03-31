@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
 import com.example.shoppingmobile.domain.Catalog
-import com.example.shoppingmobile.domain.CatalogsAdapter
+import com.example.shoppingmobile.domain.CatalogUserAdapter
 import com.example.shoppingmobile.service.ApiClient
 import com.example.shoppingmobile.service.CatalogService
 import kotlinx.coroutines.launch
@@ -25,14 +25,14 @@ class CatalogFragment : Fragment() {
     private var submitButton: Button? = null
     private var nameField: EditText? = null
     private var descriptionField: EditText? = null
-    private var adapter: CatalogsAdapter? = null
+    private var adapter: CatalogUserAdapter? = null
     private var service: CatalogService? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = CatalogsAdapter()
+        adapter = CatalogUserAdapter()
         val view = inflater.inflate(R.layout.fragment_catalog, container, false)
 
         service = ApiClient.createService(CatalogService::class.java)

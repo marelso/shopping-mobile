@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
 
-class CatalogsAdapter : ListAdapter<Catalog, CatalogsAdapter.CatalogViewHolder>(CatalogDiffCallback()) {
+class CatalogUserAdapter : ListAdapter<Catalog, CatalogUserAdapter.CatalogViewHolder>(CatalogDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.catalog_card_user, parent, false)

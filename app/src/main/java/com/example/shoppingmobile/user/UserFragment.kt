@@ -10,14 +10,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
-import com.example.shoppingmobile.domain.CatalogsAdapter
+import com.example.shoppingmobile.domain.CatalogUserAdapter
 import com.example.shoppingmobile.service.ApiClient
 import com.example.shoppingmobile.service.CatalogService
 import kotlinx.coroutines.launch
 
 class UserFragment : Fragment(R.layout.fragment_user) {
     private lateinit var catalogsRecyclerView: RecyclerView
-    private var adapter: CatalogsAdapter? = null
+    private var adapter: CatalogUserAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user, container, false)
@@ -27,7 +27,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CatalogsAdapter()
+        adapter = CatalogUserAdapter()
 
         // Create the API service
         val service = ApiClient.createService(CatalogService::class.java)
