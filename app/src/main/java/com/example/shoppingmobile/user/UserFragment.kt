@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class UserFragment : Fragment(R.layout.fragment_user) {
     private lateinit var catalogsRecyclerView: RecyclerView
+    private var adapter: CatalogsAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user, container, false)
@@ -26,23 +27,21 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = CatalogsAdapter()
 
         // Create the API service
-        val apiService = ApiClient.createService(CatalogService::class.java)
+        val service = ApiClient.createService(CatalogService::class.java)
 
         catalogsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         lifecycleScope.launch {
             try {
-                // Call the API to get the list of catalogs
-                val catalogs = apiService.getCatalogs()
-
-                // Set the CatalogsAdapter on the RecyclerView
-                val adapter = CatalogsAdapter(catalogs)
+                val catalogs = service.getCatalogs()
+                adapter?.submitList(catalogs)
                 catalogsRecyclerView.adapter = adapter
 
                 // Call notifyDataSetChanged() to update the view
-                adapter.notifyDataSetChanged()
+                adapter?.notifyDataSetChanged()
             } catch (e: Exception) {
                 // Handle the error
                 Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()

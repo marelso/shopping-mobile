@@ -5,10 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".catalog.CatalogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Catalog works" />
+        android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/textName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/textDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description" />
+
+        <Button
+            android:id="@+id/btnSubmitCatalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Catalog" />
+    </LinearLayout>
 </FrameLayout>

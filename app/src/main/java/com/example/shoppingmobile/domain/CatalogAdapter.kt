@@ -4,34 +4,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
-import com.google.android.material.textview.MaterialTextView
 
-class CatalogsAdapter(private val catalogs: List<Catalog>) : RecyclerView.Adapter<CatalogsAdapter.CatalogViewHolder>() {
+class CatalogsAdapter : ListAdapter<Catalog, CatalogsAdapter.CatalogViewHolder>(CatalogDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.catalog_card, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.catalog_card_user, parent, false)
         return CatalogViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CatalogViewHolder, position: Int) {
-        val catalog = catalogs[position]
+        val catalog = getItem(position)
         holder.bind(catalog)
-    }
-
-    override fun getItemCount(): Int {
-        return catalogs.size
     }
 
     class CatalogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val catalogNameTextView: TextView = itemView.findViewById(R.id.catalogNameTextView)
-        private val catalogDescriptionTextView: TextView = itemView.findViewById(R.id.catalogDescriptionTextView)
-
         fun bind(catalog: Catalog) {
-            catalogNameTextView.text = catalog.name
-            catalogDescriptionTextView.text = catalog.description
+            itemView.findViewById<TextView>(R.id.catalogNameTextView).text = catalog.name
+            itemView.findViewById<TextView>(R.id.catalogDescriptionTextView).text = catalog.description
+        }
+    }
+
+    class CatalogDiffCallback : DiffUtil.ItemCallback<Catalog>() {
+        override fun areItemsTheSame(oldItem: Catalog, newItem: Catalog): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Catalog, newItem: Catalog): Boolean {
+            return oldItem == newItem
         }
     }
 }
