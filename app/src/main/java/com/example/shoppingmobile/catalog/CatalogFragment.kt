@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
 import com.example.shoppingmobile.domain.Catalog
 import com.example.shoppingmobile.domain.CatalogsAdapter
@@ -17,6 +19,8 @@ import com.example.shoppingmobile.service.CatalogService
 import kotlinx.coroutines.launch
 
 class CatalogFragment : Fragment() {
+
+    private lateinit var catalogsRecyclerView: RecyclerView
 
     private var submitButton: Button? = null
     private var nameField: EditText? = null
@@ -28,6 +32,7 @@ class CatalogFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = CatalogsAdapter()
         val view = inflater.inflate(R.layout.fragment_catalog, container, false)
 
         service = ApiClient.createService(CatalogService::class.java)
@@ -37,6 +42,10 @@ class CatalogFragment : Fragment() {
         submitButton = view.findViewById(R.id.btnSubmitCatalog)
 
         submitButton?.setOnClickListener{ submit() }
+
+        catalogsRecyclerView = view.findViewById(R.id.catalog_recycler_view)
+
+        list()
 
         return view
     }
@@ -55,6 +64,24 @@ class CatalogFragment : Fragment() {
                 Toast.makeText(context, "Catalog created!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(context, "Error creating catalog: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun list() {
+        catalogsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        lifecycleScope.launch {
+            try {
+                val catalogs = service?.getCatalogs()
+                adapter?.submitList(catalogs)
+                catalogsRecyclerView.adapter = adapter
+
+                // Call notifyDataSetChanged() to update the view
+                adapter?.notifyDataSetChanged()
+            } catch (e: Exception) {
+                // Handle the error
+                Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
