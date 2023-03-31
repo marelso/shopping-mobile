@@ -2,58 +2,51 @@ package com.example.shoppingmobile.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
-import com.example.shoppingmobile.domain.CatalogAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.shoppingmobile.domain.CatalogsAdapter
+import com.example.shoppingmobile.service.ApiClient
+import com.example.shoppingmobile.service.CatalogService
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
 
 class UserFragment : Fragment(R.layout.fragment_user) {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var catalogAdapter: CatalogAdapter
+    private lateinit var catalogsRecyclerView: RecyclerView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_catalog, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_user, container, false)
+        catalogsRecyclerView = view.findViewById(R.id.catalog_recycler_view)
+        return view
+    }
 
-        recyclerView = view.findViewById(R.id.catalog_list)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        catalogAdapter = CatalogAdapter(emptyList())
-        recyclerView.adapter = catalogAdapter
+        // Create the API service
+        val apiService = ApiClient.createService(CatalogService::class.java)
 
-        // Fetch the catalogs using the CatalogService
-        val service = RetrofitClient.retrofit.create(CatalogService::class.java)
+        catalogsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             try {
-                val catalogs = service.getCatalogs()
+                // Call the API to get the list of catalogs
+                val catalogs = apiService.getCatalogs()
 
-                // Update the UI on the main thread
-                withContext(Dispatchers.Main) {
-                    catalogAdapter = CatalogAdapter(catalogs)
-                    recyclerView.adapter = catalogAdapter
-                }
-            } catch (e: HttpException) {
-                // Handle HTTP exceptions (e.g. 404, 500)
-                withContext(Dispatchers.Main) {
-                    // Show an error message to the user
-                    // (e.message() contains the error message from the server)
-                }
-            } catch (e: IOException) {
-                // Handle network IO exceptions (e.g. no internet connection)
-                withContext(Dispatchers.Main) {
-                    // Show an error message to the user
-                }
+                // Set the CatalogsAdapter on the RecyclerView
+                val adapter = CatalogsAdapter(catalogs)
+                catalogsRecyclerView.adapter = adapter
+
+                // Call notifyDataSetChanged() to update the view
+                adapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                // Handle the error
+                Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
-
-        return view
     }
 }

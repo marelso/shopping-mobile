@@ -1,35 +1,37 @@
 package com.example.shoppingmobile.domain
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
 
-class CatalogAdapter(private val catalogs: List<Catalog>) :
-    RecyclerView.Adapter<CatalogAdapter.ViewHolder>() {
+class CatalogsAdapter(private val catalogs: List<Catalog>) : RecyclerView.Adapter<CatalogsAdapter.CatalogViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.catalog_card, parent, false) as MaterialCardView
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.catalog_card, parent, false)
+        return CatalogViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(catalogs[position])
+    override fun onBindViewHolder(holder: CatalogViewHolder, position: Int) {
+        val catalog = catalogs[position]
+        holder.bind(catalog)
     }
 
-    override fun getItemCount(): Int = catalogs.size
+    override fun getItemCount(): Int {
+        return catalogs.size
+    }
 
-    class ViewHolder(itemView: MaterialCardView) : RecyclerView.ViewHolder(itemView) {
-        private val nameView: MaterialTextView = itemView.findViewById(R.id.catalog_name)
-        private val descriptionView: MaterialTextView =
-            itemView.findViewById(R.id.catalog_description)
+    class CatalogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val catalogNameTextView: TextView = itemView.findViewById(R.id.catalogNameTextView)
+        private val catalogDescriptionTextView: TextView = itemView.findViewById(R.id.catalogDescriptionTextView)
 
         fun bind(catalog: Catalog) {
-            nameView.text = catalog.name
-            descriptionView.text = catalog.description
+            catalogNameTextView.text = catalog.name
+            catalogDescriptionTextView.text = catalog.description
         }
     }
 }
