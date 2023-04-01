@@ -1,9 +1,8 @@
 package com.example.shoppingmobile.service
 
 import com.example.shoppingmobile.domain.Catalog
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.Call
+import retrofit2.http.*
 
 interface CatalogService {
     @GET("catalogs")
@@ -11,4 +10,7 @@ interface CatalogService {
 
     @POST("catalogs")
     suspend fun create(@Body request: Catalog): Catalog
+
+    @DELETE("catalogs/{id}")
+    suspend fun delete(@Path("id") id: Int): Call<Unit>
 }

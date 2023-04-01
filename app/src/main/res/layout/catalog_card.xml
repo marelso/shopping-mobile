@@ -36,12 +36,26 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-        <Button
-            android:id="@+id/btnView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="View details" />
+            android:gravity="center_horizontal">
+
+            <ImageButton
+                android:id="@+id/my_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete"
+                android:backgroundTint="@color/white"
+                android:layout_marginRight="25dp"
+                app:tint="@color/red" />
+
+            <Button
+                android:id="@+id/btnView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View details" />
+        </LinearLayout>
 
     </LinearLayout>
 
