@@ -43,17 +43,13 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerColor="@color/black"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                app:dividerInsetStart="16dp"
-                app:dividerInsetEnd="16dp"/>
+                app:dividerColor="@color/black"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="450dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/catalog_recycler_view"
