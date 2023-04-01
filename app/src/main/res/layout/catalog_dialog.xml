@@ -2,31 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
     <TextView
         android:id="@+id/textCatalogId"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/textName"
-        android:layout_width="match_parent"
+        android:id="@+id/textCatalogName"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:hint="Name" />
 
     <EditText
-        android:id="@+id/textDescription"
-        android:layout_width="match_parent"
+        android:id="@+id/textCatalogDescription"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="25dp"
         android:hint="Description" />
-
-    <Button
-        android:id="@+id/btnUpdateCatalog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Update" />
 
 </LinearLayout>
