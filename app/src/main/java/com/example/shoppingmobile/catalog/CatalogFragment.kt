@@ -41,11 +41,14 @@ class CatalogFragment : Fragment() {
         descriptionField = view.findViewById(R.id.textDescription)
         submitButton = view.findViewById(R.id.btnSubmitCatalog)
 
-        submitButton?.setOnClickListener{ submit() }
+
 
         catalogsRecyclerView = view.findViewById(R.id.catalog_recycler_view)
 
-        list()
+        lifecycleScope.launch {
+            list()
+            submitButton?.setOnClickListener{ submit() }
+        }
 
         return view
     }
@@ -56,6 +59,10 @@ class CatalogFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
+                if(name.isNullOrEmpty() || description.isNullOrEmpty()) {
+                    throw Exception("All the fields should be filled.");
+                }
+
                 val catalog = service?.create(Catalog(0, name, description))
                 val newCatalogs = (adapter?.currentList?.plus(listOf(catalog)))?.sortedBy { it?.id }
                 adapter?.submitList(newCatalogs)
@@ -68,21 +75,19 @@ class CatalogFragment : Fragment() {
         }
     }
 
-    private fun list() {
+    private suspend fun list() {
         catalogsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        lifecycleScope.launch {
-            try {
-                val catalogs = service?.getCatalogs()
-                adapter?.submitList(catalogs)
-                catalogsRecyclerView.adapter = adapter
+        try {
+            val catalogs = service?.getCatalogs()
+            adapter?.submitList(catalogs)
+            catalogsRecyclerView.adapter = adapter
 
-                // Call notifyDataSetChanged() to update the view
-                adapter?.notifyDataSetChanged()
-            } catch (e: Exception) {
-                // Handle the error
-                Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+            // Call notifyDataSetChanged() to update the view
+            adapter?.notifyDataSetChanged()
+        } catch (e: Exception) {
+            // Handle the error
+            Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 }
