@@ -39,6 +39,7 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
     private fun switchViewMode(fragment: Fragment) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.flManage, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
