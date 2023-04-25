@@ -1,41 +1,47 @@
 package com.example.shoppingmobile.domain
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
 
-class CatalogUserAdapter : ListAdapter<Catalog, CatalogUserAdapter.CatalogViewHolder>(CatalogDiffCallback()) {
+class CatalogUserAdapter(private val onClickListener: View.OnClickListener) : RecyclerView.Adapter<CatalogUserAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.catalog_card_user, parent, false)
-        return CatalogViewHolder(view)
+    private var dataList: MutableList<Catalog> = mutableListOf()
+
+    fun setData(data: MutableList<Catalog>) {
+        dataList.clear()
+        dataList.addAll(data)
+        notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: CatalogViewHolder, position: Int) {
-        val catalog = getItem(position)
-        holder.bind(catalog)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.catalog_card_user, parent, false)
+        return ViewHolder(view)
     }
 
-    class CatalogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val catalog: Catalog = dataList[position]
+        holder.textId.text = catalog.id.toString()
+        holder.textName.text = catalog.name
+        holder.textDescription.text = catalog.description
 
-        fun bind(catalog: Catalog) {
-            itemView.findViewById<TextView>(R.id.catalogNameTextView).text = catalog.name
-            itemView.findViewById<TextView>(R.id.catalogDescriptionTextView).text = catalog.description
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(it)
         }
     }
 
-    class CatalogDiffCallback : DiffUtil.ItemCallback<Catalog>() {
-        override fun areItemsTheSame(oldItem: Catalog, newItem: Catalog): Boolean {
-            return oldItem.id == newItem.id
-        }
+    override fun getItemCount() = dataList.size
 
-        override fun areContentsTheSame(oldItem: Catalog, newItem: Catalog): Boolean {
-            return oldItem == newItem
-        }
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val textId: TextView = view.findViewById(R.id.catalogIdTextView)
+        val textName: TextView = view.findViewById(R.id.catalogNameTextView)
+        val textDescription: TextView = view.findViewById(R.id.catalogDescriptionTextView)
     }
 }
