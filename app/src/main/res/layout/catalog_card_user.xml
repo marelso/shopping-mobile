@@ -17,6 +17,14 @@
         android:padding="16dp">
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/catalogIdTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/catalogNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
