@@ -9,11 +9,16 @@ import com.example.shoppingmobile.R
 
 class OfferAdapter(): RecyclerView.Adapter<OfferAdapter.ViewHolder>() {
     private var dataList: MutableList<Offer> = mutableListOf()
+    private var onClickListener: View.OnClickListener? = null
 
     fun setData(data: MutableList<Offer>) {
         dataList.clear()
         dataList.addAll(data)
         notifyDataSetChanged()
+    }
+
+    fun setClickListener(event: View.OnClickListener) {
+        onClickListener = event
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -40,5 +45,9 @@ class OfferAdapter(): RecyclerView.Adapter<OfferAdapter.ViewHolder>() {
             holder.coupon.visibility = View.VISIBLE
         }
         else holder.coupon.visibility = View.GONE
+
+        holder.itemView.setOnClickListener {
+            onClickListener?.onClick(it)
+        }
     }
 }
