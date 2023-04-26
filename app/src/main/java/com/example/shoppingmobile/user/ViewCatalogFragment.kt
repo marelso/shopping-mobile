@@ -7,11 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
+import com.example.shoppingmobile.domain.CatalogUserAdapter
 import com.example.shoppingmobile.domain.category.Category
-import com.example.shoppingmobile.domain.category.CategoryAdapter
+import com.example.shoppingmobile.domain.offer.Offer
+import com.example.shoppingmobile.domain.offer.OfferAdapter
 import com.example.shoppingmobile.service.ApiClient
 import com.example.shoppingmobile.service.CategoryService
+import com.example.shoppingmobile.service.OfferService
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import retrofit2.Call
@@ -26,9 +31,13 @@ class ViewCatalogFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var catalogId: Int = 0
 
+    private var categoryUnderline: View? = null
     private var noCategorySelected: TextView? = null
     private var currentCategory: TextView? = null
     private var availableCategories: ChipGroup? = null
+
+    private var offerRecyclerView: RecyclerView? = null
+    private var offerAdapter: OfferAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +57,13 @@ class ViewCatalogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        offerAdapter = OfferAdapter()
+
         availableCategories = view.findViewById(R.id.availableCategories)
         noCategorySelected = view.findViewById(R.id.textNoCategorySelect)
+        offerRecyclerView = view.findViewById(R.id.offerRecyclerView)
         currentCategory = view.findViewById(R.id.category)
+        categoryUnderline = view.findViewById(R.id.categoryUnderline)
 
         val service = ApiClient.createService(CategoryService::class.java)
 
@@ -91,16 +104,23 @@ class ViewCatalogFragment : Fragment() {
         availableCategories?.setOnCheckedChangeListener { group, checkedId ->
             chipCheckedChange(group, checkedId)
         }
+
+        offerRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        offerRecyclerView?.adapter = offerAdapter
     }
 
     private fun chipCheckedChange(group: ChipGroup, checkedId: Int) {
         if (checkedId == View.NO_ID) {
+            noCategorySelected?.text = "Select any category..."
             noCategorySelected?.visibility = View.VISIBLE
             currentCategory?.visibility = View.INVISIBLE
-            loadOffersByCategory()
+            categoryUnderline?.visibility = View.INVISIBLE
+            offerRecyclerView?.adapter = OfferAdapter()
         } else {
             noCategorySelected?.visibility = View.GONE
             currentCategory?.visibility = View.VISIBLE
+            categoryUnderline?.visibility = View.VISIBLE
+            loadOffersByCategory()
         }
 
         var selectedChipId: Int? = null
@@ -114,7 +134,38 @@ class ViewCatalogFragment : Fragment() {
         if (selectedChipId != View.NO_ID) {
             val selectedChip = selectedChipId?.let { view?.findViewById<Chip>(it) }
             val category = selectedChip?.tag as Category
+
+            val service = ApiClient.createService(OfferService::class.java)
+
+            val call = service.getByCategory(category.id)
+            call.enqueue(object : Callback<List<Offer>> {
+                override fun onResponse(call: Call<List<Offer>>, response: Response<List<Offer>>) {
+                    if (response.isSuccessful) {
+                        val offers = response.body() as List<Offer>
+
+                        if(offers.isEmpty()) {
+                            offerRecyclerView?.adapter = OfferAdapter()
+                            noCategorySelected?.text = "No offers available at this time."
+                            noCategorySelected?.visibility = View.VISIBLE
+                            return
+                        }
+
+                        offerAdapter?.setData(offers.toMutableList())
+                        noCategorySelected?.visibility = View.GONE
+                    } else {
+                        noCategorySelected?.text = "Cannot load offers."
+                        noCategorySelected?.visibility = View.VISIBLE
+                        return
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Offer>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+            })
         }
+
+        offerRecyclerView?.adapter = offerAdapter
     }
 
     companion object {
