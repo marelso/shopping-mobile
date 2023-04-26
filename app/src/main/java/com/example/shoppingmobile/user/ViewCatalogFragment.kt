@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
-import com.example.shoppingmobile.domain.CatalogUserAdapter
 import com.example.shoppingmobile.domain.category.Category
 import com.example.shoppingmobile.domain.offer.Offer
 import com.example.shoppingmobile.domain.offer.OfferAdapter
@@ -129,6 +128,19 @@ class ViewCatalogFragment : Fragment() {
         selectedChipId.let { group.findViewById<Chip>(it)?.isChecked = true }
     }
 
+    private fun offerClick(view: View) {
+        val id = view.findViewById<TextView>(R.id.id)?.text.toString()
+        val fragment = ViewOffer.newInstance(Integer.valueOf(id))
+        switchViewMode(fragment)
+    }
+
+    private fun switchViewMode(fragment: Fragment) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun loadOffersByCategory() {
         val selectedChipId = availableCategories?.checkedChipId
         if (selectedChipId != View.NO_ID) {
@@ -151,6 +163,10 @@ class ViewCatalogFragment : Fragment() {
                         }
 
                         offerAdapter?.setData(offers.toMutableList())
+                        offerAdapter?.setClickListener( View.OnClickListener { view ->
+                            offerClick(view)
+                        })
+
                         noCategorySelected?.visibility = View.GONE
                     } else {
                         noCategorySelected?.text = "Cannot load offers."
