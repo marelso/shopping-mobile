@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/catalogs"
+        android:enabled="true"
+        android:icon="@drawable/ic_catalog"
+        android:title="Catalog"/>
+    <item
+        android:id="@+id/categories"
+        android:enabled="true"
+        android:icon="@drawable/ic_category"
+        android:title="Category"/>
+
+    <item
+        android:id="@+id/offers"
+        android:enabled="true"
+        android:icon="@drawable/ic_offer"
+        android:title="Offers"/>
+</menu>
