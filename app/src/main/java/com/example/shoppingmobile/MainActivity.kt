@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
     private fun switchViewMode(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
+            .addToBackStack(null)
             commit()
         }
     }
