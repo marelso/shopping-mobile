@@ -127,6 +127,15 @@
                 android:layout_marginTop="10dp">
             </androidx.recyclerview.widget.RecyclerView>
 
+            <TextView
+                android:id="@+id/relatedProducts"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No related products yet..."
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

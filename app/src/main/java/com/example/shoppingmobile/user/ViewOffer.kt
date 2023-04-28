@@ -132,9 +132,19 @@ class ViewOffer : Fragment() {
                                         offers.addAll(categoryOffers)
                                     }
 
+                                    val related = view.findViewById<TextView>(R.id.relatedProducts)
+
                                     apiCallCounter++
                                     if (apiCallCounter == categoryCount) {
-                                        offerAdapter?.setData(offers)
+                                        val containsThisOffer = offers.find { it.id == offerId }
+                                        if (containsThisOffer != null) {
+                                            offers.remove(containsThisOffer)
+                                        }
+                                        if(offers.isNotEmpty()) {
+                                            related.visibility = View.GONE
+                                            offerAdapter?.setData(offers)
+                                        }
+                                        else related.visibility = View.VISIBLE
                                     }
                                 }
                                 override fun onFailure(call: Call<List<Offer>>, t: Throwable) {
