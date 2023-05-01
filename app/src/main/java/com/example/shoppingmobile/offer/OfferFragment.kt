@@ -5,7 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
+import com.example.shoppingmobile.domain.category.Category
+import com.example.shoppingmobile.domain.category.CategoryAdapter
+import com.example.shoppingmobile.domain.offer.Offer
+import com.example.shoppingmobile.service.ApiClient
+import com.example.shoppingmobile.service.CategoryService
+import com.example.shoppingmobile.service.OfferService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +33,9 @@ class OfferFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var offersRecyclerView: RecyclerView? = null
+    private var adapter: OfferAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +50,41 @@ class OfferFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_offer, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        offersRecyclerView = view.findViewById(R.id.offersRecyclerView)
+        adapter = OfferAdapter()
+
+        loadOffers()
+
+
+        offersRecyclerView?.adapter = adapter
+        offersRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun loadOffers() {
+        val service = ApiClient.createService(OfferService::class.java)
+        val call = service.get()
+
+        call.enqueue(object : Callback<List<Offer>> {
+            override fun onResponse(
+                call: Call<List<Offer>>,
+                response: Response<List<Offer>>
+            ) {
+                val offers = response.body() as List<Offer>
+
+                if(offers.isNotEmpty()) {
+                    adapter?.setData(offers.toMutableList())
+                }
+            }
+
+            override fun onFailure(call: Call<List<Offer>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     companion object {
