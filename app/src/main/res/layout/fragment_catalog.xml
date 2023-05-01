@@ -49,11 +49,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSubmitCatalog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Catalog" />
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:backgroundTint="@color/green"
+                android:text="Submit">
+
+            </com.google.android.material.button.MaterialButton>
 
         </LinearLayout>
 

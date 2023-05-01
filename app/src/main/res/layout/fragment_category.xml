@@ -71,15 +71,16 @@
 
             </com.google.android.material.chip.ChipGroup>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/submitButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/greensc"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:text="Submit"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                app:backgroundTint="@color/green"
+                android:text="Submit">
+
+            </com.google.android.material.button.MaterialButton>
 
         </LinearLayout>
 
