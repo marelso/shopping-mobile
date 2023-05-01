@@ -5,7 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.shoppingmobile.R
+import com.example.shoppingmobile.service.ApiClient
+import com.example.shoppingmobile.service.CatalogService
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +29,8 @@ class CategoryFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var availableCatalogs: ChipGroup? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +45,33 @@ class CategoryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        availableCatalogs = view.findViewById(R.id.availableCatalogs)
+
+        val service = ApiClient.createService(CatalogService::class.java)
+        lifecycleScope.launch {
+            try {
+                val catalogs = service.getCatalogs()
+
+                for(catalog in catalogs) {
+                    val chip = Chip(requireContext())
+                    chip.chipCornerRadius = 5F
+                    chip.text = catalog.name
+                    chip.tag = catalog
+                    chip.isCheckable = true
+                    chip.isFocusable = true
+
+                    availableCatalogs?.addView(chip)
+                }
+
+            } catch (e: Exception) {
+                Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     companion object {
