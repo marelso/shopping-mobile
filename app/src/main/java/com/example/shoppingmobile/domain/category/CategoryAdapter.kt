@@ -8,36 +8,46 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
 import com.example.shoppingmobile.basics.TextAdapter
+import com.example.shoppingmobile.domain.offer.Offer
+import com.example.shoppingmobile.domain.offer.OfferAdapter
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
-class CategoryAdapter(private val categories: List<Category>) : BaseAdapter() {
+class CategoryAdapter() : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+    private var dataList: MutableList<Category> = mutableListOf()
+    private var onClickListener: View.OnClickListener? = null
 
-    override fun getCount(): Int {
-        return categories.size
+    fun setData(data: MutableList<Category>) {
+        dataList.clear()
+        dataList.addAll(data)
+        notifyDataSetChanged()
     }
 
-    override fun getItem(position: Int): Any {
-        return categories[position]
+    fun setClickListener(event: View.OnClickListener) {
+        onClickListener = event
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var id: TextView = itemView.findViewById(R.id.textCategoryId)
+        var name: TextView = itemView.findViewById(R.id.textCategoryName)
+        var priority: TextView = itemView.findViewById(R.id.textCategoryPriority)
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val chip = convertView as? Chip ?: LayoutInflater.from(parent?.context)
-            .inflate(R.layout.category_chip, parent, false) as Chip
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_card, parent, false)
+        return ViewHolder(view)
+    }
 
-        val category = getItem(position) as Category
-        chip.text = category.name
-        chip.tag = category
+    override fun getItemCount(): Int = dataList.size
 
-        chip.setOnClickListener {
-            val selectedCategory = it.tag as Category
-            // do something with the selected category
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val category: Category = dataList[position]
+        holder.id.text = category.id.toString()
+        holder.name.text = category.name
+        holder.priority.text = category.priority.toString()
+
+        holder.itemView.setOnClickListener {
+            onClickListener?.onClick(it)
         }
-
-        return chip
     }
 }

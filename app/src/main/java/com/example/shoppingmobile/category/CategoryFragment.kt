@@ -7,12 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
+import com.example.shoppingmobile.domain.category.Category
+import com.example.shoppingmobile.domain.category.CategoryAdapter
+import com.example.shoppingmobile.domain.offer.Offer
 import com.example.shoppingmobile.service.ApiClient
 import com.example.shoppingmobile.service.CatalogService
+import com.example.shoppingmobile.service.CategoryService
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,6 +39,8 @@ class CategoryFragment : Fragment() {
     private var param2: String? = null
 
     private var availableCatalogs: ChipGroup? = null
+    private var categoriesRecyclerView: RecyclerView? = null
+    private var categoriesAdapter: CategoryAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,26 +61,59 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         availableCatalogs = view.findViewById(R.id.availableCatalogs)
+        categoriesRecyclerView = view.findViewById(R.id.categoriesRecyclerView)
+        categoriesRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        categoriesAdapter = CategoryAdapter()
 
-        val service = ApiClient.createService(CatalogService::class.java)
         lifecycleScope.launch {
             try {
-                val catalogs = service.getCatalogs()
-
-                for(catalog in catalogs) {
-                    val chip = Chip(requireContext())
-                    chip.text = catalog.name
-                    chip.tag = catalog
-                    chip.isCheckable = true
-                    chip.isFocusable = true
-
-                    availableCatalogs?.addView(chip)
-                }
+                loadCatalogs()
+                loadCategories()
 
             } catch (e: Exception) {
                 Toast.makeText(context, "Error loading catalogs: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
+
+        categoriesRecyclerView?.adapter = categoriesAdapter
+    }
+
+    private suspend fun loadCatalogs() {
+        val service = ApiClient.createService(CatalogService::class.java)
+        val catalogs = service.getCatalogs()
+
+        for(catalog in catalogs) {
+            val chip = Chip(requireContext())
+            chip.text = catalog.name
+            chip.tag = catalog
+            chip.isCheckable = true
+            chip.isFocusable = true
+
+            availableCatalogs?.addView(chip)
+        }
+    }
+
+    private fun loadCategories() {
+        val service = ApiClient.createService(CategoryService::class.java)
+        val call = service.get(null)
+
+        call.enqueue(object : Callback<List<Category>> {
+            override fun onResponse(
+                call: Call<List<Category>>,
+                response: Response<List<Category>>
+            ) {
+                val categories = response.body() as List<Category>
+
+                if(categories.isNotEmpty()) {
+                    categoriesAdapter?.setData(categories.toMutableList())
+                }
+            }
+
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
     }
 
