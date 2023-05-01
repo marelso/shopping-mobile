@@ -58,7 +58,6 @@ class CategoryFragment : Fragment() {
 
                 for(catalog in catalogs) {
                     val chip = Chip(requireContext())
-                    chip.chipCornerRadius = 5F
                     chip.text = catalog.name
                     chip.tag = catalog
                     chip.isCheckable = true
