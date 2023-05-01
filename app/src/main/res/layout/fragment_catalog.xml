@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter catalog's description"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textCatalogDescription"
@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:layout_marginTop="10dp"
                 app:backgroundTint="@color/green"
                 android:text="Submit">
 
