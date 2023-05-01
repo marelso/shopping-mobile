@@ -37,13 +37,14 @@ class CatalogFragment : Fragment() {
 
         service = ApiClient.createService(CatalogService::class.java)
 
-        nameField = view.findViewById(R.id.textName)
-        descriptionField = view.findViewById(R.id.textDescription)
+        nameField = view.findViewById(R.id.textCatalogName)
+        descriptionField = view.findViewById(R.id.textCatalogDescription)
         submitButton = view.findViewById(R.id.btnSubmitCatalog)
 
 
 
         catalogsRecyclerView = view.findViewById(R.id.catalog_recycler_view)
+        catalogsRecyclerView.adapter = adapter
 
         lifecycleScope.launch {
             list()

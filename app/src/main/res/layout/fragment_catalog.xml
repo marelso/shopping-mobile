@@ -13,20 +13,41 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/textName"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCatalogName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name" />
+                android:hint="Choose catalog's name"
+                android:layout_marginTop="20dp">
 
-            <EditText
-                android:id="@+id/textDescription"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textCatalogName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCatalogDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Description" />
+                android:hint="Enter catalog's description"
+                android:layout_marginTop="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textCatalogDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnSubmitCatalog"
@@ -36,26 +57,14 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/black"/>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="@color/black"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/catalog_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="450dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/catalog_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </FrameLayout>
