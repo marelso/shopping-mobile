@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingmobile.R
@@ -14,6 +15,8 @@ import com.example.shoppingmobile.domain.offer.Offer
 import com.example.shoppingmobile.service.ApiClient
 import com.example.shoppingmobile.service.CategoryService
 import com.example.shoppingmobile.service.OfferService
+import com.example.shoppingmobile.user.ViewCatalogFragment
+import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +36,7 @@ class OfferFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var btnCreate: MaterialButton? = null
     private var offersRecyclerView: RecyclerView? = null
     private var adapter: OfferAdapter? = null
 
@@ -54,14 +58,25 @@ class OfferFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        btnCreate = view.findViewById(R.id.btnCreate)
         offersRecyclerView = view.findViewById(R.id.offersRecyclerView)
         adapter = OfferAdapter()
 
         loadOffers()
-
+        btnCreate?.setOnClickListener {
+            switchViewMode(NewOfferFragment.newInstance(null, null))
+        }
 
         offersRecyclerView?.adapter = adapter
         offersRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun switchViewMode(fragment: Fragment) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun loadOffers() {
