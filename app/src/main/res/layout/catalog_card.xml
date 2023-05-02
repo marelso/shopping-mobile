@@ -16,24 +16,74 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/textCatalogId"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/textCatalogName"
+            <ImageButton
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_weight="0"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/white"
+                app:tint="@color/green"
+                android:src="@drawable/ic_catalog"/>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:text="#"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textCatalogId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/textCatalogName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                app:tint="@color/red"
+                android:src="@drawable/ic_delete"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/textCatalogDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
         <LinearLayout
@@ -41,20 +91,16 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal">
 
-            <ImageButton
-                android:id="@+id/btnDelete"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                android:backgroundTint="@color/white"
-                android:layout_marginRight="25dp"
-                app:tint="@color/red" />
-
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="View details" />
+                android:backgroundTint="@color/white"
+                android:text="View details"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:rippleColor="@color/gray"/>
+
         </LinearLayout>
 
     </LinearLayout>
