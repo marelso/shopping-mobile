@@ -28,8 +28,7 @@
                 android:id="@+id/textOfferId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:text="Teste"/>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
         </LinearLayout>
         <TextView
             android:id="@+id/textOfferTitle"
