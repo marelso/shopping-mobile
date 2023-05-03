@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         val switchItem = menu?.findItem(R.id.switchMode)
         val switch = switchItem?.actionView?.findViewById<Switch>(R.id.isAdmin)
+        a
 
         switch?.setOnCheckedChangeListener { _, isChecked ->
             switchViewMode(if(isChecked) adminMode else userMode)
