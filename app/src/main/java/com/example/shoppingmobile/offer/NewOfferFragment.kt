@@ -1,6 +1,7 @@
 package com.example.shoppingmobile.offer
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,18 @@ import com.example.shoppingmobile.R
 import com.example.shoppingmobile.domain.Catalog
 import com.example.shoppingmobile.domain.CatalogAdapter
 import com.example.shoppingmobile.domain.CatalogSpinnerAdapter
+import com.example.shoppingmobile.domain.category.Category
 import com.example.shoppingmobile.service.ApiClient
 import com.example.shoppingmobile.service.CatalogService
+import com.example.shoppingmobile.service.CategoryService
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -132,6 +139,8 @@ class NewOfferFragment : Fragment() {
 
         buttonCatalog?.setOnClickListener {
             doCatalogStepDone()
+            var catalog = selectCatalog?.selectedItem as Catalog
+            loadCategories(catalog.id)
             doCategoriesStepEditing()
             doOfferStepPending()
         }
@@ -169,6 +178,45 @@ class NewOfferFragment : Fragment() {
         val service = ApiClient.createService(CatalogService::class.java)
 
         return service.getCatalogs()
+    }
+
+    private fun loadCategories(catalogId: Int) {
+        val service = ApiClient.createService(CategoryService::class.java)
+        val call = service.get(catalogId)
+        categoriesChips?.removeAllViews()
+
+        call.enqueue(object : Callback<List<Category>> {
+            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                if (response.isSuccessful) {
+                    val categories = response.body() as List<Category>
+
+                    if(categories.isEmpty()) {
+                        categoriesContentText?.text = "No categories available at this time."
+                        buttonContinue?.isEnabled = false
+                    }
+                    else {
+                        categoriesContentText?.text = "Choose categories:"
+                        buttonContinue?.isEnabled = true
+                        for (category in categories) {
+                            val chip = Chip(requireContext())
+                            chip.text = category.name
+                            chip.tag = category
+                            chip.isClickable = true
+                            chip.isCheckable = true
+                            chip.isFocusable = true
+                            categoriesChips?.addView(chip)
+                        }
+                    }
+
+                } else {
+                    //TODO handle error
+                }
+            }
+
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                //TODO handle error
+            }
+        })
     }
 
     private fun doCategoriesStepDone() {

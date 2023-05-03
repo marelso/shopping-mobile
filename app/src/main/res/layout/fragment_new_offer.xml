@@ -175,12 +175,17 @@
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:visibility="gone"/>
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/categoriesChips"
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleLine="true"
-                        android:visibility="gone"/>
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/categoriesChips"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            app:singleLine="true"
+                            android:visibility="gone"/>
+                    </HorizontalScrollView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
